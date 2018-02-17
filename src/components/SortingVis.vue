@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-  <div>{{ getCurrent }} </div>
+  <div class="grid-container" v-html="getCurrent"></div>
   <button @click="startProcess">Get Next</button>
  </div>
 </template>
@@ -10,21 +10,25 @@ export default {
   name: "SortingVis",
   data: getData,
   methods: {
-    startProcess() {
+   getPixel(colour){
+return `<div class="item" style="height:25px;background-color:${colour}"></div>`;
+},
+ startProcess() {
       setInterval(() => {
-        if (this.currentArray <= this.rawArray.length) {
+console.log(this.currentArray , this.rawArray.length);
+        if (this.currentArray < this.rawArray.length) {
           this.currentArray++;
         }
-      }, 1000);
+      }, 300);
     }
   },
   computed: {
     getCurrent() {
-      return `<p>${this.rawArray[this.currentArray]}</p>`;
+      return this.rawArray[this.currentArray].map(getColor).map(this.getPixel).join("");
     }
   },
-  props: {}
-};
+  props: {},
+}
 function getColor(input) {
   const max = 25;
   const value = 25 - input;
@@ -385,5 +389,22 @@ li {
 }
 a {
   color: #42b983;
+}
+.grid-container {
+  --grid-count: 25
+}
+.grid-container {
+  width: 550px;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-count), 1fr);
+  color: white;
+  align-items: self-end;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 </style>

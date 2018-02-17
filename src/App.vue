@@ -1,14 +1,7 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-<SortingVis />
-<SortingVis />
-<SortingVis />
-<SortingVis />
-<SortingVis />
-<SortingVis />
-<SortingVis />
-<SortingVis />
+    <SortingVis />
   </div>
 </template>
 
