@@ -1,29 +1,28 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <SortingVis :snapshots="snapshots"/>
-    <SortingVis :snapshots="snapshots"/>
-    <SortingVis :snapshots="snapshots"/>
-    <SortingVis :snapshots="snapshots"/>
-    <SortingVis :snapshots="snapshots"/>
+<li v-for="item in snapshotsPool" :key="item.id">
+    <SortingVis :snapshots="item"/>
+  </li>
   </div>
 </template>
 
 <script>
+import _ from "lodash";
 import HelloWorld from "./components/HelloWorld.vue";
 import SortingVis from "./components/SortingVis.vue";
 
 export default {
   name: "app",
-  data: () => getData(tmp),
+  data: () => getData(),
   components: {
     HelloWorld,
     SortingVis
   }
 };
-const snapshots = [];
-const snapshot = array => snapshots.push(Array.from(array));
 const cocktailSort = arr => {
+  const snapshots = [];
+  const snapshot = array => snapshots.push(Array.from(array));
   function swap(arr, a, b) {
     snapshot(arr);
     if (a === b) return arr;
@@ -52,36 +51,19 @@ const cocktailSort = arr => {
 
     left++;
   }
-  return arr;
+  snapshot(arr);
+  return snapshots;
 };
-function getData(arr) {
-  snapshot(cocktailSort(arr));
+function getData() {
+  let snapshotsPool = new Array(15)
+    .fill()
+    .map(() => _.shuffle(new Array(25).fill().map((_, index) => index + 1)))
+    .map(cocktailSort);
+  console.log({ snapshotsPool });
   return {
-    snapshots: snapshots
+    snapshotsPool
   };
 }
-const tmp = [
-  7,
-  14,
-  4,
-  15,
-  8,
-  13,
-  6,
-  3,
-  1,
-  18,
-  2,
-  5,
-  10,
-  16,
-  12,
-  17,
-  19,
-  11,
-  9,
-  20
-];
 </script>
 
 <style>
