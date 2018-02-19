@@ -2,6 +2,10 @@
   <div id="app">
     <img src="./assets/logo.png">
     <SortingVis :snapshots="snapshots"/>
+    <SortingVis :snapshots="snapshots"/>
+    <SortingVis :snapshots="snapshots"/>
+    <SortingVis :snapshots="snapshots"/>
+    <SortingVis :snapshots="snapshots"/>
   </div>
 </template>
 
@@ -51,7 +55,7 @@ const cocktailSort = arr => {
   return arr;
 };
 function getData(arr) {
-  cocktailSort(arr);
+  snapshot(cocktailSort(arr));
   return {
     snapshots: snapshots
   };

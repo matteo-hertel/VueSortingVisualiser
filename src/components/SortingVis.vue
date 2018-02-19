@@ -1,58 +1,69 @@
 <template>
   <div class="hello">
-	<div class="grid-container" v-html="getCurrent"></div> 
+<canvas width="500" height="25" ref="canvas"></canvas>
+{{snapshotsComputed}}
 </div>
 </template>
 
 <script>
 export default {
   name: "SortingVis",
-  data: getData,
   methods: {
-    getPixel(colour) {
-      return `<div class="item" style="height:20px;background-color:${colour}"></div>`;
-    },
-    startProcess() {
-      setInterval(() => {
-        if (this.currentArray < this.snapshots.length) {
-          this.currentArray++;
-        }
-      }, 300);
-    }
   },
-  computed: {
-    getCurrent() {
-      return this.snapshots[this.currentArray]
-        .map(getColor)
-        .map(this.getPixel)
-        .join("");
-    }
-  },
+asyncComputed : {
+        snapshotsCompute(){
+setTimeout(()=>{
+
+test(this.snapshots, this.$refs.canvas.getContext('2d'));
+}, 1000);
+return "lol";        
+}
+      },
   props: {
-    snapshots: Array
+    snapshots:  Array
   }
 };
-function getColor(input) {
-  const max = 20;
-  const value = 20 - input;
+  async function test(data, ctx){
+function delay(data) {
+  return () => {
+    return new Promise(resolve => {
+    setTimeout(() => resolve(data),50 );
+      })
+}}
 
-  const spectrum = value / max;
-  const red =
-    spectrum < 0.5 ? Math.floor(Math.abs(spectrum - 0.5) * 2 * 205) : 0;
-  const blue = spectrum > 0.5 ? Math.floor((spectrum - 0.5) * 2 * 205) : 0;
-  const green = blue > 0 ? 205 - blue : 205 - red;
+let p = data.map(delay)
+for (let i of p) {
+      await i().then((arr)=>{
+      arr.map(getColor)
+  .map((i, idx) =>{
+ctx.fillStyle = i;
+  let n = 500 / 20
+  ctx.fillRect(idx * n, 0, n, n);
+  });
+    })
+}
+}
+  function getColor(input) {
+    const max = 20;
+    const value = input - 1;
 
-  return `rgb(${red},${green},${blue})`;
-}
-function getData() {
-  return {
-    currentArray: 0
-  };
-}
+    const spectrum = value / max;
+    const red =
+      spectrum < 0.5 ? Math.floor(Math.abs(spectrum - 0.5) * 2 * 255) : 0;
+    const blue = spectrum > 0.5 ? Math.floor((spectrum - 0.5) * 2 * 255) : 0;
+    const green = blue > 0 ? 255 - blue : 255 - red;
+
+    return `rgb(${red},${green},${blue})`;
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello {
+padding:0;
+margin:0;
+height:25px
+}
 h3 {
   margin: 40px 0 0;
 }
