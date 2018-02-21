@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-<li v-for="item in snapshotsPool" :key="item.id">
-    <SortingVis :snapshots="item"/>
-  </li>
+<div v-for="item in snapshotsPool" :key="item.id">
+    <SortingVis :snapshots="item" :delay="20"/>
+  </div>
   </div>
 </template>
 

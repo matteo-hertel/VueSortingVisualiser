@@ -1,57 +1,47 @@
 <template>
   <div class="hello">
-<canvas width="500" height="25" ref="canvas"></canvas>
-{{snapshotsComputed}}
+<canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight" ref="canvas"></canvas>
 </div>
 </template>
 
 <script>
+import { delayWithData, getColorWithValues } from "./../libs/utils";
 export default {
   name: "SortingVis",
-  methods: {},
-  asyncComputed: {
-    snapshotsCompute() {
-      setTimeout(() => {
-        test(this.snapshots, this.$refs.canvas.getContext("2d"));
-      }, 1000);
-      return "lol";
+  props: {
+    snapshots: Array,
+    canvasWidth: {
+      type: Number,
+      default: 500
+    },
+    canvasHeight: {
+      type: Number,
+      default: 25
+    },
+    delay: {
+      type: Number,
+      default: 100
     }
   },
-  props: {
-    snapshots: Array
+  mounted() {
+    fillCanvasWithSnapshostAsync(
+      this.snapshots,
+      this.$refs.canvas.getContext("2d"),
+      this.delay
+    );
   }
 };
-async function test(data, ctx) {
-  function delay(data) {
-    return () => {
-      return new Promise(resolve => {
-        setTimeout(() => resolve(data), 20);
-      });
-    };
-  }
 
-  let p = data.map(delay);
-  for (let i of p) {
-    await i().then(arr => {
-      arr.map(getColor).map((i, idx) => {
-        ctx.fillStyle = i;
-        let n = 500 / 20;
-        ctx.fillRect(idx * n, 0, n, n);
-      });
+async function fillCanvasWithSnapshostAsync(data, ctx, renderDelay) {
+  const getColor = getColorWithValues(1, 20);
+  for (let delay of data.map(delayWithData)) {
+    let snapshot = await delay(renderDelay);
+    snapshot.map(getColor).map((i, idx) => {
+      ctx.fillStyle = i;
+      let n = 500 / 20;
+      ctx.fillRect(idx * n, 0, n, n);
     });
   }
-}
-function getColor(input) {
-  const max = 20;
-  const value = input - 1;
-
-  const spectrum = value / max;
-  const red =
-    spectrum < 0.5 ? Math.floor(Math.abs(spectrum - 0.5) * 2 * 255) : 0;
-  const blue = spectrum > 0.5 ? Math.floor((spectrum - 0.5) * 2 * 255) : 0;
-  const green = blue > 0 ? 255 - blue : 255 - red;
-
-  return `rgb(${red},${green},${blue})`;
 }
 </script>
 
