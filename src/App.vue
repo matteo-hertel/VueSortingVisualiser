@@ -1,13 +1,12 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-<div v-for="item in snapshotsPool" :key="item.id">
-    <SortingVis :snapshots="item" :delay="20"/>
-  </div>
+    <SortingVis :snapshots="snapshotsPool" :delay="10" :rows="iterations" :columns="fill"/>
   </div>
 </template>
 
 <script>
+//<div v-for="item in snapshotsPool" :key="item.id" style="height:5px">
 import _ from "lodash";
 import HelloWorld from "./components/HelloWorld.vue";
 import SortingVis from "./components/SortingVis.vue";
@@ -55,13 +54,18 @@ const cocktailSort = arr => {
   return snapshots;
 };
 function getData() {
-  let snapshotsPool = new Array(15)
+  let iterations = 500;
+  let square = 1;
+  let fill = 500;
+  let snapshotsPool = new Array(iterations)
     .fill()
-    .map(() => _.shuffle(new Array(25).fill().map((_, index) => index + 1)))
+    .map(() => _.shuffle(new Array(fill).fill().map((_, index) => index + 1)))
     .map(cocktailSort);
-  console.log({ snapshotsPool });
   return {
-    snapshotsPool
+    snapshotsPool,
+    iterations,
+    fill,
+    square
   };
 }
 </script>

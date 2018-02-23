@@ -1,7 +1,5 @@
 <template>
-  <div class="hello">
 <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight" ref="canvas"></canvas>
-</div>
 </template>
 
 <script>
@@ -10,13 +8,19 @@ export default {
   name: "SortingVis",
   props: {
     snapshots: Array,
+    rows: Number,
+    square: {
+      type: Number,
+      default: 10
+    },
+    columns: Number,
     canvasWidth: {
       type: Number,
       default: 500
     },
     canvasHeight: {
       type: Number,
-      default: 25
+      default: 500
     },
     delay: {
       type: Number,
@@ -24,62 +28,26 @@ export default {
     }
   },
   mounted() {
-    fillCanvasWithSnapshostAsync(
-      this.snapshots,
-      this.$refs.canvas.getContext("2d"),
-      this.delay
-    );
+    fillCanvasWithSnapshostAsync.bind(this)(this.$refs.canvas.getContext("2d"));
   }
 };
 
-async function fillCanvasWithSnapshostAsync(data, ctx, renderDelay) {
-  const getColor = getColorWithValues(1, 20);
-  for (let delay of data.map(delayWithData)) {
-    let snapshot = await delay(renderDelay);
-    snapshot.map(getColor).map((i, idx) => {
-      ctx.fillStyle = i;
-      let n = 500 / 20;
-      ctx.fillRect(idx * n, 0, n, n);
-    });
-  }
+async function fillCanvasWithSnapshostAsync(ctx) {
+  const getColor = getColorWithValues(1, this.columns);
+  this.snapshots.map(async (snapshots, j) => {
+    for (let delay of snapshots
+      .filter((i, idx, arr) => {
+        if (idx === arr.length - 1) return true;
+        return idx % 2 === 0;
+      })
+      .map(delayWithData)) {
+      let snapshot = await delay(this.delay);
+      snapshot.map(getColor).forEach((i, idx) => {
+        ctx.fillStyle = i;
+        let n = this.rows * this.square / this.columns;
+        ctx.fillRect(idx * n, j * n, n, n);
+      });
+    }
+  });
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.hello {
-  padding: 0;
-  margin: 0;
-  height: 25px;
-}
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.grid-container {
-  --grid-count: 20;
-}
-.grid-container {
-  width: 550px;
-  display: grid;
-  grid-template-columns: repeat(var(--grid-count), 1fr);
-  color: white;
-  align-items: self-end;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
