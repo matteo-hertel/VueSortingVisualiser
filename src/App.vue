@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <SortingVis :snapshots="snapshotsPool" :delay="10" :rows="iterations" :columns="fill"/>
+    <SortingVis :snapshots="snapshotsPool" :delay="100" :rows="iterations" :square="square" :columns="fill"/>
   </div>
 </template>
 
@@ -54,9 +54,9 @@ const cocktailSort = arr => {
   return snapshots;
 };
 function getData() {
-  let iterations = 500;
-  let square = 1;
-  let fill = 500;
+  let iterations = 100;
+  let square = 5;
+  let fill = 100;
   let snapshotsPool = new Array(iterations)
     .fill()
     .map(() => _.shuffle(new Array(fill).fill().map((_, index) => index + 1)))

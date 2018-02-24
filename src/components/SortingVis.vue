@@ -28,26 +28,48 @@ export default {
     }
   },
   mounted() {
+    adjustCanvas.bind(this)();
     fillCanvasWithSnapshostAsync.bind(this)(this.$refs.canvas.getContext("2d"));
   }
 };
-
+function adjustCanvas() {
+  this.$refs.canvas.width = this.columns * this.square;
+  this.$refs.canvas.height = this.rows * this.square;
+}
+function* emitData(arr) {
+  while (arr.filter(i => i.length).length) {
+    yield arr.map(a => a.shift());
+  }
+}
 async function fillCanvasWithSnapshostAsync(ctx) {
   const getColor = getColorWithValues(1, this.columns);
-  this.snapshots.map(async (snapshots, j) => {
-    for (let delay of snapshots
-      .filter((i, idx, arr) => {
-        if (idx === arr.length - 1) return true;
-        return idx % 2 === 0;
-      })
-      .map(delayWithData)) {
-      let snapshot = await delay(this.delay);
-      snapshot.map(getColor).forEach((i, idx) => {
+  const generateSnapshot = emitData(this.snapshots);
+  console.log(this.delay);
+  let interval = setInterval(() => {
+    let snap = generateSnapshot.next();
+    if (!snap.value) return clearInterval(interval);
+    snap.value.map((s, j) => {
+      if (!s) return;
+      s.map(getColor).map((i, idx) => {
         ctx.fillStyle = i;
         let n = this.rows * this.square / this.columns;
         ctx.fillRect(idx * n, j * n, n, n);
       });
-    }
-  });
+    });
+  }, this.delay);
+  //this.snapshots.map(async (snapshots, j) => {
+  //  for (let delay of snapshots.map(delayWithData)) {
+  //    let snapshot = await delay(this.delay);
+  //    snapshot.map(getColor).map((i, idx) => {
+  //      ctx.fillStyle = i;
+  //      let n = this.rows * this.square / this.columns;
+  //      ctx.fillRect(idx * n, j * n, n, n);
+  //    });
+  //  }
+  //});
 }
+//.filter((i, idx, arr) => {
+//        if (idx === arr.length - 1) return true;
+//        return idx % 2 === 0;
+//      })
 </script>
