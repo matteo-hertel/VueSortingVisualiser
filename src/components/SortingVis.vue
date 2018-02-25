@@ -1,30 +1,34 @@
 <template>
-<canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight" ref="canvas"></canvas>
+<canvas v-bind:width="columns" v-bind:height="rows" ref="canvas"></canvas>
 </template>
 
 <script>
-import { delayWithData, getColorWithValues } from "./../libs/utils";
+import { time, colour, filter } from "./../libs";
+
 export default {
   name: "SortingVis",
   props: {
     snapshots: Array,
-    rows: Number,
-    square: {
+    squareSize: {
       type: Number,
       default: 10
     },
-    columns: Number,
-    canvasWidth: {
+    optimise: {
+      type: Boolean,
+      default: true
+    },
+
+    columns: {
       type: Number,
       default: 500
     },
-    canvasHeight: {
+    rows: {
       type: Number,
       default: 500
     },
     delay: {
       type: Number,
-      default: 100
+      default: 50
     }
   },
   mounted() {
@@ -33,43 +37,26 @@ export default {
   }
 };
 function adjustCanvas() {
-  this.$refs.canvas.width = this.columns * this.square;
-  this.$refs.canvas.height = this.rows * this.square;
+  this.$refs.canvas.width = this.columns * this.squareSize;
+  this.$refs.canvas.height = this.rows * this.squareSize;
 }
-function* emitData(arr) {
-  while (arr.filter(i => i.length).length) {
-    yield arr.map(a => a.shift());
-  }
-}
+
 async function fillCanvasWithSnapshostAsync(ctx) {
-  const getColor = getColorWithValues(1, this.columns);
-  const generateSnapshot = emitData(this.snapshots);
-  console.log(this.delay);
-  let interval = setInterval(() => {
-    let snap = generateSnapshot.next();
-    if (!snap.value) return clearInterval(interval);
-    snap.value.map((s, j) => {
-      if (!s) return;
-      s.map(getColor).map((i, idx) => {
+  const getColour = colour.getColourWithValues(1, this.columns);
+  this.snapshots.map(async (snapshots, j) => {
+    let snaps = snapshots
+      .filter(this.optimise ? filter.skipEveryOtherButLast : filter.filterNone)
+      .map(time.delayWithData);
+
+    for (let delay of snaps) {
+      let snapshot = await delay(this.delay);
+      snapshot.map(getColour).map((i, idx) => {
         ctx.fillStyle = i;
-        let n = this.rows * this.square / this.columns;
+        let n = this.rows * this.squareSize / this.columns;
         ctx.fillRect(idx * n, j * n, n, n);
       });
-    });
-  }, this.delay);
-  //this.snapshots.map(async (snapshots, j) => {
-  //  for (let delay of snapshots.map(delayWithData)) {
-  //    let snapshot = await delay(this.delay);
-  //    snapshot.map(getColor).map((i, idx) => {
-  //      ctx.fillStyle = i;
-  //      let n = this.rows * this.square / this.columns;
-  //      ctx.fillRect(idx * n, j * n, n, n);
-  //    });
-  //  }
-  //});
+    }
+    snaps = null;
+  });
 }
-//.filter((i, idx, arr) => {
-//        if (idx === arr.length - 1) return true;
-//        return idx % 2 === 0;
-//      })
 </script>
