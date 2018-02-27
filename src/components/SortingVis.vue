@@ -29,6 +29,10 @@ export default {
     delay: {
       type: Number,
       default: 50
+    },
+    max: {
+      type: Number,
+      default: 0
     }
   },
   mounted() {
@@ -47,7 +51,10 @@ function getFilter(optimise) {
 
 async function fillCanvasWithSnapshostAsync() {
   const ctx = this.$refs.canvas.getContext("2d");
-  const getColour = colour.getColourWithValues(1, this.columns);
+  const getColour = colour.getColourWithValues(
+    1,
+    this.max ? this.max : this.columns
+  );
 
   this.snapshots.map(async (snapshots, j) => {
     let snaps = snapshots
