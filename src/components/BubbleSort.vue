@@ -7,22 +7,26 @@ import _ from "lodash";
 import SortingVis from "./SortingVis.vue";
 
 export default {
-  name: "InsertionSort",
+  name: "BubbleSort",
   data: () => getData(),
   components: { SortingVis }
 };
-const insertionSort = nums => {
+const bubbleSort = nums => {
   const snapshots = [];
   const snapshot = array => snapshots.push(Array.from(array));
-  for (let i = 1; i < nums.length; i++) {
-    for (let j = 0; j < i; j++) {
+
+  do {
+    var swapped = false;
+    for (var i = 0; i < nums.length; i++) {
       snapshot(nums);
-      if (nums[i] < nums[j]) {
-        let spliced = nums.splice(i, 1);
-        nums.splice(j, 0, spliced[0]);
+      if (nums[i] > nums[i + 1]) {
+        var temp = nums[i];
+        nums[i] = nums[i + 1];
+        nums[i + 1] = temp;
+        swapped = true;
       }
     }
-  }
+  } while (swapped);
   snapshot(nums);
   return snapshots;
 };
@@ -33,7 +37,7 @@ function getData() {
   let snapshotsPool = new Array(iterations)
     .fill()
     .map(() => _.shuffle(new Array(fill).fill().map((_, index) => index + 1)))
-    .map(insertionSort);
+    .map(bubbleSort);
   return {
     snapshotsPool,
     iterations,

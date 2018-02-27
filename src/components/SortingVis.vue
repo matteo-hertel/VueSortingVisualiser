@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     adjustCanvas.bind(this)();
-    fillCanvasWithSnapshostAsync.bind(this)(this.$refs.canvas.getContext("2d"));
+    fillCanvasWithSnapshostAsync.bind(this)();
   }
 };
 function adjustCanvas() {
@@ -41,11 +41,17 @@ function adjustCanvas() {
   this.$refs.canvas.height = this.rows * this.squareSize;
 }
 
-async function fillCanvasWithSnapshostAsync(ctx) {
+function getFilter(optimise) {
+  return optimise ? filter.skipEveryOtherButLast : filter.filterNone;
+}
+
+async function fillCanvasWithSnapshostAsync() {
+  const ctx = this.$refs.canvas.getContext("2d");
   const getColour = colour.getColourWithValues(1, this.columns);
+
   this.snapshots.map(async (snapshots, j) => {
     let snaps = snapshots
-      .filter(this.optimise ? filter.skipEveryOtherButLast : filter.filterNone)
+      .filter(getFilter(this.optimise))
       .map(time.delayWithData);
 
     for (let delay of snaps) {
@@ -56,7 +62,6 @@ async function fillCanvasWithSnapshostAsync(ctx) {
         ctx.fillRect(idx * n, j * n, n, n);
       });
     }
-    snaps = null;
   });
 }
 </script>
