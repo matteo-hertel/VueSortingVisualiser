@@ -1,15 +1,13 @@
 <template>
-<div>
-	<RadixSort delay="500"/>
-</div>
+<Dark/>
 </template>
-
 <script>
 import InsertionSort from "./components/InsertionSort.vue";
 import CocktailSort from "./components/CocktailSort.vue";
 import BubbleSort from "./components/BubbleSort.vue";
 import HeapSort from "./components/HeapSort.vue";
 import RadixSort from "./components/RadixSort.vue";
+import Dark from "./Dark.vue";
 
 export default {
   name: "app",
@@ -18,7 +16,8 @@ export default {
     InsertionSort,
     BubbleSort,
     HeapSort,
-    RadixSort
+    RadixSort,
+    Dark
   }
 };
 </script>
