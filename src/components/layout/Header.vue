@@ -1,6 +1,6 @@
-<template>
-  <v-app id="inspire" dark>
-    <v-navigation-drawer
+<template functional>
+<div>
+<v-navigation-drawer
       clipped
       fixed
       v-model="drawer"
@@ -29,30 +29,5 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Application</v-toolbar-title>
     </v-toolbar>
-    <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-          <v-flex shrink>
-            <HeapSort/>
-	  </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-    <v-footer app fixed>
-      <span>&copy; 2017</span>
-    </v-footer>
-  </v-app>
+</div>
 </template>
-
-<script>
-import HeapSort from "./components/HeapSort.vue";
-export default {
-  data: () => ({
-    drawer: true
-  }),
-  props: {
-    source: String
-  },
-  components: { HeapSort }
-};
-</script>
