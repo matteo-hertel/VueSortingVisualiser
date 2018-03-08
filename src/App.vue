@@ -1,6 +1,10 @@
 <template>
   <v-app id="inspire" dark>
-   <Header />
+   <Header> 
+	<div slot="navigation">
+          <Navigation />
+        </div>
+   </Header>
    <v-content>
       <v-container fluid fill-height>
         <v-layout justify-center align-center>
@@ -29,6 +33,7 @@
 
 <script>
 import Header from "./components/layout/Header.vue";
+import Navigation from "./components/layout/Navigation.vue";
 import Footer from "./components/layout/Footer.vue";
 export default {
   data: () => ({
@@ -37,6 +42,6 @@ export default {
   props: {
     source: String
   },
-  components: { Header, Footer }
+  components: { Header, Navigation, Footer }
 };
 </script>
