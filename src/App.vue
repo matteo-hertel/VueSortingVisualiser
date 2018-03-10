@@ -2,7 +2,7 @@
   <v-app id="inspire" dark>
    <Header> 
 	<div slot="navigation">
-          <Navigation />
+          <Navigation :routes="routes" />
         </div>
    </Header>
    <v-content>
@@ -35,9 +35,12 @@
 import Header from "./components/layout/Header.vue";
 import Navigation from "./components/layout/Navigation.vue";
 import Footer from "./components/layout/Footer.vue";
+import routes from "./routes.js";
+
 export default {
   data: () => ({
-    drawer: true
+    drawer: true,
+    routes
   }),
   props: {
     source: String

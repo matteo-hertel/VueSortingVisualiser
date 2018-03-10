@@ -3,16 +3,14 @@ import App from "./App.vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
-import HeapSort from "./components/HeapSort.vue";
+import routes from "./routes.js";
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
 Vue.config.productionTip = false;
+
 const router = new VueRouter({
-  routes: [
-    // dynamic segments start with a colon
-    { path: "/heap-sort", component: HeapSort }
-  ]
+  routes
 });
 
 new Vue({
