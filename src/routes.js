@@ -10,42 +10,55 @@ export default [
     path: "/",
     name: "",
     component: Home,
-    icon: "home",
-    iconColour: "blue-grey darken-2"
+    meta: {
+      icon: "home",
+      iconColour: "blue-grey darken-2"
+    }
   },
   {
     path: "/bubble-sort",
     name: "BubbleSort",
     component: BubbleSort,
-    icon: "label",
-    iconColour: "blue-grey darken-2"
+    meta: {
+      icon: "label",
+      description: "The most basic sorting algo out there!",
+      iconColour: "blue-grey darken-2"
+    }
   },
   {
     path: "/cocktail-sort",
     name: "CocktailSort",
     component: CocktailSort,
-    icon: "label",
-    iconColour: "blue-grey darken-2"
+    meta: {
+      icon: "label",
+      iconColour: "blue-grey darken-2"
+    }
   },
   {
     path: "/heap-sort",
     name: "HeapSort",
     component: HeapSort,
-    icon: "label",
-    iconColour: "blue-grey darken-2"
+    meta: {
+      icon: "label",
+      iconColour: "blue-grey darken-2"
+    }
   },
   {
     path: "/insertion-sort",
     name: "InsertionSort",
     component: InsertionSort,
-    icon: "label",
-    iconColour: "blue-grey darken-2"
+    meta: {
+      icon: "label",
+      iconColour: "blue-grey darken-2"
+    }
   },
   {
     path: "/radix-sort",
     name: "RadixSort",
     component: RadixSort,
-    icon: "label",
-    iconColour: "blue-grey darken-2"
+    meta: {
+      icon: "label",
+      iconColour: "blue-grey darken-2"
+    }
   }
 ];
