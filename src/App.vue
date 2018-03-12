@@ -13,13 +13,10 @@
                <v-flex xs12>
                  <v-card>
                    <v-card-title primary-title>
-                     <div>
-                       <h3 class="headline mb-0">Heap Sort</h3>
-                    </div>
+                       <h3 :if="title" class="headline mb-0">{{title}}</h3>
                    </v-card-title>
-                  <div>
                    <router-view></router-view>
-                 </div>
+                   <p :if="description">{{description}}</p>
 		</v-card>
                </v-flex>
              </v-layout>
@@ -44,6 +41,14 @@ export default {
   }),
   props: {
     source: String
+  },
+  computed: {
+    title() {
+      return this.$route.name;
+    },
+    description() {
+      return this.$route.meta.description;
+    }
   },
   components: { Header, Navigation, Footer }
 };
