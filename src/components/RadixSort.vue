@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import _ from "lodash";
 import SortingVis from "./SortingVis.vue";
 
 export default {

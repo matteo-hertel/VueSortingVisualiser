@@ -1,6 +1,6 @@
 <template>
 <v-list dense>
-<div v-for="route in routes">
+<div v-for="route in routes" :key="route.path">
 <v-list-tile v-on:click="navigateTo(route.path)">
           <v-list-tile-action>
             <v-icon :color="route.meta.iconColour">{{route.meta.icon}}</v-icon>
