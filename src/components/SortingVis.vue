@@ -1,5 +1,5 @@
 <template>
-<canvas v-bind:width="columns" v-bind:height="rows" ref="canvas"></canvas>
+<canvas  ref="canvas"></canvas>
 </template>
 
 <script>
@@ -10,8 +10,7 @@ export default {
   props: {
     snapshots: Array,
     squareSize: {
-      type: Number,
-      default: 10
+      type: Number
     },
     optimise: {
       type: Boolean,
@@ -19,12 +18,10 @@ export default {
     },
 
     columns: {
-      type: Number,
-      default: 500
+      type: Number
     },
     rows: {
-      type: Number,
-      default: 500
+      type: Number
     },
     delay: {
       type: Number,

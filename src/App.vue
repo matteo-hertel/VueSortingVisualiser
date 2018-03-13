@@ -12,12 +12,32 @@
             <v-layout>
                <v-flex xs12>
                  <v-card>
-                   <v-card-title primary-title>
-                       <h3 :if="title" class="headline mb-0">{{title}}</h3>
-                   </v-card-title>
+                    <v-container fill-height>
+                      <v-layout fill-height>
+                        <v-flex xs12 align-end flexbox>
+                     <v-card-title primary-title>
+          <div>
+            <div :if="title" class="headline">{{title}}</div>
+            <span :if="description">{{description}}</span>
+          </div>
+        </v-card-title>
                    <router-view></router-view>
-                   <p :if="description">{{description}}</p>
-		</v-card>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn icon>
+                      <v-icon>favorite</v-icon>
+                    </v-btn>
+                    <v-btn icon>
+                      <v-icon>bookmark</v-icon>
+                    </v-btn>
+                    <v-btn icon>
+                      <v-icon>share</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
                </v-flex>
              </v-layout>
             </v-flex>

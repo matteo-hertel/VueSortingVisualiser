@@ -1,5 +1,5 @@
 <template>
-    <SortingVis delay="5" :snapshots="snapshotsPool" :rows="iterations" :square="square" :columns="fill"/>
+    <SortingVis :delay="delay" :snapshots="snapshotsPool" :rows="rows" :squareSize="squareSize" :columns="columns"/>
 </template>
 
 <script>
@@ -61,18 +61,22 @@ const heapSort = array => {
   return snapshots;
 };
 function getData() {
-  let iterations = 90;
-  let square = 20;
-  let fill = 150;
-  let snapshotsPool = new Array(iterations)
+  let rows = 50;
+  let squareSize = 5;
+  let delay = 50;
+  let columns = 50;
+  let snapshotsPool = new Array(rows)
     .fill()
-    .map(() => _.shuffle(new Array(fill).fill().map((_, index) => index + 1)))
+    .map(() =>
+      _.shuffle(new Array(columns).fill().map((_, index) => index + 1))
+    )
     .map(heapSort);
   return {
     snapshotsPool,
-    iterations,
-    fill,
-    square
+    rows,
+    delay,
+    columns,
+    squareSize
   };
 }
 </script>

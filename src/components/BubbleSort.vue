@@ -1,5 +1,5 @@
 <template>
-    <SortingVis delay="5" :snapshots="snapshotsPool" :rows="iterations" :square="square" :columns="fill"/>
+    <SortingVis :delay="delay" :snapshots="snapshotsPool" :rows="rows" :squareSize="squareSize" :columns="columns"/>
 </template>
 
 <script>
@@ -30,19 +30,24 @@ const bubbleSort = nums => {
   snapshot(nums);
   return snapshots;
 };
+
 function getData() {
-  let iterations = 50;
-  let square = 20;
-  let fill = 50;
-  let snapshotsPool = new Array(iterations)
+  let rows = 50;
+  let squareSize = 5;
+  let delay = 5;
+  let columns = 50;
+  let snapshotsPool = new Array(rows)
     .fill()
-    .map(() => _.shuffle(new Array(fill).fill().map((_, index) => index + 1)))
+    .map(() =>
+      _.shuffle(new Array(columns).fill().map((_, index) => index + 1))
+    )
     .map(bubbleSort);
   return {
+    columns,
+    delay,
+    rows,
     snapshotsPool,
-    iterations,
-    fill,
-    square
+    squareSize
   };
 }
 </script>

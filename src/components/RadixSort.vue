@@ -1,5 +1,5 @@
 <template>
-    <SortingVis delay="500" max="500000" :snapshots="snapshotsPool" :rows="iterations" :square="square" :columns="fill"/>
+    <SortingVis :delay="delay" :max="80000000" :snapshots="snapshotsPool" :rows="rows" :squareSize="squareSize" :columns="columns"/>
 </template>
 
 <script>
@@ -52,21 +52,23 @@ const radixSort = array => {
   return snapshots;
 };
 function getData() {
-  let iterations = 150;
-  let square = 20;
-  let fill = 800;
-  let base = new Array(fill)
+  let rows = 250;
+  let delay = 500;
+  let squareSize = 1;
+  let columns = 250;
+  let base = new Array(columns)
     .fill()
-    .map(() => Math.floor(Math.random() * 500000));
-  let snapshotsPool = new Array(iterations)
+    .map(() => Math.floor(Math.random() * 80000000));
+  let snapshotsPool = new Array(rows)
     .fill()
     .map(() => [...base])
     .map(radixSort);
   return {
     snapshotsPool,
-    iterations,
-    fill,
-    square
+    rows,
+    delay,
+    columns,
+    squareSize
   };
 }
 </script>
