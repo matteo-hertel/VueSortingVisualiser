@@ -3,51 +3,34 @@
 </template>
 
 <script>
-import _ from "lodash";
-import SortingVis from "./SortingVis.vue";
+import _ from 'lodash';
+import SortingVis from './SortingVis.vue';
+import snapshotSortingProcess from './../libs/snapshotSortingProcess';
+import BubbleSort from './../libs/algorithms/BubbleSort';
 
 export default {
-  name: "BubbleSort",
+  name: 'BubbleSort',
   data: () => getData(),
-  components: { SortingVis }
-};
-const bubbleSort = nums => {
-  const snapshots = [];
-  const snapshot = array => snapshots.push(Array.from(array));
-
-  do {
-    var swapped = false;
-    for (var i = 0; i < nums.length; i++) {
-      snapshot(nums);
-      if (nums[i] > nums[i + 1]) {
-        var temp = nums[i];
-        nums[i] = nums[i + 1];
-        nums[i + 1] = temp;
-        swapped = true;
-      }
-    }
-  } while (swapped);
-  snapshot(nums);
-  return snapshots;
+  components: {SortingVis},
 };
 
 function getData() {
-  let rows = 50;
-  let squareSize = 5;
+  let rows = 60;
+  let squareSize = 10;
   let delay = 5;
-  let columns = 50;
+  let columns = 60;
   let snapshotsPool = new Array(rows)
     .fill()
     .map(() =>
-      _.shuffle(new Array(columns).fill().map((_, index) => index + 1))
+      _.shuffle(new Array(columns).fill().map((_, index) => index + 1)),
     )
-    .map(bubbleSort);
+    .map(arr => snapshotSortingProcess(arr, BubbleSort));
   return {
     columns,
     delay,
     rows,
     snapshotsPool,
-    squareSize
+    squareSize,
   };
 }
 </script>
